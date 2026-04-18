@@ -1,0 +1,46 @@
+# --- Зависимости ---
+node_modules/
+/package-lock.json
+/yarn.lock
+
+# --- Сборка и дистрибутивы ---
+dist/
+build/
+release/
+*.exe
+*.AppImage
+*.deb
+*.rpm
+
+# --- Логи и дампы ---
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+core.[0-9]*
+
+# --- Minecraft / Runtime данные ---
+.yolauncher/
+run/
+cache/
+assets/
+natives/
+runtime/
+# Игнорим папки, которые создает MCLC при тестах
+minecraft/
+
+# --- Настройки IDE (VS Code, WebStorm) ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# --- Системный мусор ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+*~
+*.swp
+.fuse_hidden*
+.directory

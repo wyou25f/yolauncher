@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YoLauncher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- Custom titlebar / drag region -->
+  <div class="titlebar" id="titlebar">
+    <span class="titlebar-title">YoLauncher</span>
+    <div class="titlebar-controls">
+      <button class="ctrl-btn minimize" id="btn-minimize" title="Свернуть">─</button>
+      <button class="ctrl-btn close"    id="btn-close"    title="Закрыть">✕</button>
+    </div>
+  </div>
+
+  <!-- Background pixel grid overlay -->
+  <div class="pixel-bg"></div>
+
+  <!-- Main layout -->
+  <div class="layout">
+
+    <!-- ── LEFT PANEL ───────────────────────────────────────── -->
+    <aside class="panel-left">
+
+      <!-- Logo -->
+      <div class="logo-block">
+        <div class="logo-text">
+          <span class="logo-yo">Yo</span><span class="logo-launcher">Launcher</span>
+        </div>
+        <div class="logo-version-badge">v1.0.0</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Username -->
+      <div class="field-group">
+        <label class="field-label" for="input-username">
+          <span class="label-icon">👤</span> Игрок
+        </label>
+        <div class="pixel-input-wrap">
+          <input
+            id="input-username"
+            class="pixel-input"
+            type="text"
+            maxlength="16"
+            placeholder="Player"
+            spellcheck="false"
+            autocomplete="off"
+          />
+        </div>
+        <div class="field-hint">Никнейм · до 16 символов</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Version selector -->
+      <div class="field-group">
+        <label class="field-label" for="select-filter">
+          <span class="label-icon">📦</span> Версия
+        </label>
+
+        <!-- Filter tabs -->
+        <div class="filter-tabs" id="filter-tabs">
+          <button class="filter-tab active" data-filter="release">Релизы</button>
+          <button class="filter-tab" data-filter="snapshot">Снапшоты</button>
+          <button class="filter-tab" data-filter="old_beta">Бета</button>
+          <button class="filter-tab" data-filter="old_alpha">Альфа</button>
+        </div>
+
+        <!-- Custom dropdown -->
+        <div class="pixel-select" id="pixel-select" role="combobox" tabindex="0">
+          <div class="pixel-select-display" id="select-display">
+            <span class="select-text" id="select-text">Загрузка...</span>
+            <span class="select-arrow" id="select-arrow">▼</span>
+          </div>
+          <div class="pixel-select-dropdown" id="select-dropdown">
+            <div class="dropdown-loading" id="dropdown-loading">
+              <div class="pixel-spinner"></div>
+              <span>Получение версий...</span>
+            </div>
+            <ul class="dropdown-list" id="dropdown-list" role="listbox"></ul>
+          </div>
+        </div>
+
+        <div class="field-hint" id="version-hint">Выберите версию для запуска</div>
+      </div>
+
+      <div class="spacer"></div>
+
+      <!-- Status bar -->
+      <div class="status-block" id="status-block">
+        <div class="status-indicator" id="status-dot"></div>
+        <span class="status-text" id="status-text">Готов к запуску</span>
+      </div>
+
+    </aside>
+
+    <!-- ── RIGHT / MAIN AREA ─────────────────────────────────── -->
+    <main class="panel-main">
+
+      <!-- Decorative MC art -->
+      <div class="mc-art">
+        <div class="mc-block dirt">
+          <div class="block-face top"></div>
+          <div class="block-face front"></div>
+          <div class="block-face right"></div>
+        </div>
+        <div class="mc-block grass">
+          <div class="block-face top"></div>
+          <div class="block-face front"></div>
+          <div class="block-face right"></div>
+        </div>
+        <div class="mc-block stone">
+          <div class="block-face top"></div>
+          <div class="block-face front"></div>
+          <div class="block-face right"></div>
+        </div>
+      </div>
+
+      <!-- Progress section (hidden by default) -->
+      <div class="progress-section" id="progress-section">
+        <div class="progress-label" id="progress-label">Инициализация...</div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-percent" id="progress-percent">0%</div>
+      </div>
+
+      <!-- PLAY BUTTON -->
+      <button class="play-btn" id="play-btn" disabled>
+        <span class="play-btn-text" id="play-text">ИГРАТЬ</span>
+        <div class="play-btn-shine"></div>
+      </button>
+
+      <!-- Selected info under button -->
+      <div class="play-info" id="play-info">
+        <span id="play-version-label">Версия не выбрана</span>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
