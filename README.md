@@ -1,3 +1,4 @@
+This launcher is not affiliated with Mojang AB or Microsoft. Use at your own risk.
 # 🚀 YoLauncher
 
 <p align="center">
