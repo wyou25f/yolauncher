@@ -1,0 +1,28 @@
+{
+  "name": "yolauncher",
+  "version": "1.1.0",
+  "description": "YoLauncher — Minimalist Minecraft Launcher",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev":   "electron . --inspect",
+    "build": "electron-builder"
+  },
+  "dependencies": {
+    "minecraft-launcher-core": "^3.16.0"
+  },
+  "devDependencies": {
+    "electron":         "^29.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "build": {
+    "appId":       "com.yolauncher.app",
+    "productName": "YoLauncher",
+    "win":   { "target": "nsis",    "icon": "assets/icon.ico"  },
+    "linux": { "target": "AppImage","icon": "assets/icon.png"  },
+    "mac":   { "target": "dmg",     "icon": "assets/icon.icns" },
+    "files": ["main.js","preload.js","renderer/**","assets/**"]
+  },
+  "author": "wyou25f",
+  "license": "SEE LICENSE IN LICENSE"
+}

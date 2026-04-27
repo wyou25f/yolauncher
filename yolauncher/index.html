@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <title>YoLauncher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TITLEBAR
+════════════════════════════════════════════════════════════════ -->
+<div class="titlebar">
+  <div class="title-left">
+    <span class="title-logo"><em>Yo</em>Launcher</span>
+    <span class="title-ver" id="app-version">v1.1.0</span>
+  </div>
+  <div class="title-ctrl">
+    <button class="ctrl-btn min" id="btn-minimize">─</button>
+    <button class="ctrl-btn cls" id="btn-close">✕</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     UPDATE BANNER
+════════════════════════════════════════════════════════════════ -->
+<div class="update-banner hidden" id="update-banner">
+  <div class="update-left">
+    <span class="update-dot"></span>
+    <span>Доступно обновление:&nbsp;<strong id="update-ver">—</strong></span>
+  </div>
+  <div class="update-right">
+    <button class="btn-do-update" id="btn-do-update">↓ ОБНОВИТЬ</button>
+    <button class="btn-dismiss-update" id="btn-dismiss-update">✕</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     APP LAYOUT
+════════════════════════════════════════════════════════════════ -->
+<div class="app-layout" id="app-layout">
+
+  <!-- ──────────────── SIDEBAR ─────────────────────────── -->
+  <aside class="sidebar">
+
+    <div class="s-logo">
+      <div class="s-logo-mark"></div>
+      <div class="s-logo-text">
+        <span class="logo-yo">Yo</span><span class="logo-la">Launcher</span>
+        <div class="logo-ver" id="sidebar-ver">v1.1.0</div>
+      </div>
+    </div>
+
+    <div class="s-divider"></div>
+
+    <nav class="s-nav">
+      <button class="nav-btn active" data-tab="instances">
+        <span class="nav-ico">▤</span>Инстанции
+      </button>
+      <button class="nav-btn" data-tab="skins">
+        <span class="nav-ico">◈</span>Скины
+      </button>
+      <button class="nav-btn" data-tab="settings">
+        <span class="nav-ico">⚙</span>Настройки
+      </button>
+    </nav>
+
+    <div class="s-spacer"></div>
+
+    <div class="s-field">
+      <label class="s-label">👤 ИГРОК</label>
+      <input id="input-username" class="s-input" type="text"
+             maxlength="16" placeholder="Player"
+             spellcheck="false" autocomplete="off"/>
+    </div>
+
+    <div class="s-divider"></div>
+
+    <div class="s-status">
+      <div class="status-dot" id="status-dot"></div>
+      <span class="status-txt" id="status-text">Загрузка...</span>
+    </div>
+
+  </aside>
+
+  <!-- ──────────────── MAIN CONTENT ────────────────────── -->
+  <main class="main">
+
+    <!-- ─────────── TAB: INSTANCES ─────────────────────── -->
+    <section class="tab-panel" id="tab-instances">
+
+      <div class="tab-topbar">
+        <h2 class="tab-title">ИНСТАНЦИИ</h2>
+        <button class="btn-create" id="btn-new-instance">+ СОЗДАТЬ</button>
+      </div>
+
+      <div class="instances-scroll" id="instances-scroll">
+        <div class="instances-grid" id="instances-grid"><!-- JS renders --></div>
+        <div class="empty-state hidden" id="empty-state">
+          <div class="empty-ico">⬛</div>
+          <div class="empty-title">НЕТ ИНСТАНЦИЙ</div>
+          <div class="empty-sub">Нажмите «+ СОЗДАТЬ» чтобы начать</div>
+        </div>
+      </div>
+
+      <!-- ── Play Section ─────────────────────────────── -->
+      <div class="play-section">
+
+        <div class="play-detail" id="play-detail">
+          <div class="detail-empty" id="detail-empty">Выберите инстанцию выше</div>
+          <div class="detail-info hidden" id="detail-info">
+            <span class="detail-name" id="detail-name">—</span>
+            <div class="detail-badges">
+              <span class="badge" id="d-ver-badge">—</span>
+              <span class="badge badge-ml" id="d-ml-badge">Vanilla</span>
+              <span class="badge badge-ram" id="d-ram-badge">2048 MB</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="play-controls">
+
+          <div class="progress-block hidden" id="progress-section">
+            <div class="progress-top">
+              <span class="progress-label" id="progress-label">Инициализация...</span>
+              <span class="progress-pct" id="progress-pct">0%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-stats" id="progress-stats">0 из 0 файлов</div>
+          </div>
+
+          <button class="play-btn" id="play-btn" disabled>
+            <span class="play-shine"></span>
+            <span class="play-txt" id="play-text">ИГРАТЬ</span>
+          </button>
+
+        </div>
+
+      </div>
+    </section><!-- /tab-instances -->
+
+    <!-- ─────────── TAB: SKINS ──────────────────────────── -->
+    <section class="tab-panel hidden" id="tab-skins">
+
+      <div class="tab-topbar">
+        <h2 class="tab-title">СКИНЫ</h2>
+      </div>
+
+      <div class="skins-content">
+
+        <div class="skin-preview-col">
+          <div class="skin-canvas-wrap">
+            <canvas id="skin-canvas" width="80" height="160"></canvas>
+          </div>
+          <div class="skin-canvas-label" id="skin-label">Нет скина (Steve)</div>
+        </div>
+
+        <div class="skin-info-col">
+          <p class="skin-desc">
+            Загрузите PNG-файл скина Minecraft Java Edition.<br/>
+            Поддерживаются форматы 64×64 и 64×128 пикселей.
+          </p>
+
+          <div class="skin-btn-row">
+            <button class="btn-action" id="btn-upload-skin">⬛ ЗАГРУЗИТЬ</button>
+            <button class="btn-action btn-sec" id="btn-reset-skin">✕ СБРОСИТЬ</button>
+          </div>
+          <input id="skin-file" type="file" accept="image/png" style="display:none"/>
+
+          <div class="skin-note-box">
+            <div class="note-title">ВАЖНО</div>
+            <div class="note-body">
+              Скин сохраняется локально и используется в оффлайн-режиме.
+              Для применения онлайн — управляйте скином на сайте&nbsp;
+              <span class="link" id="link-mojang">minecraft.net</span>.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- /tab-skins -->
+
+    <!-- ─────────── TAB: SETTINGS ────────────────────────── -->
+    <section class="tab-panel hidden" id="tab-settings">
+
+      <div class="tab-topbar">
+        <h2 class="tab-title">НАСТРОЙКИ</h2>
+      </div>
+
+      <div class="settings-scroll">
+        <div class="settings-wrap">
+
+          <!-- Performance -->
+          <div class="settings-group">
+            <div class="sg-title">ПРОИЗВОДИТЕЛЬНОСТЬ</div>
+
+            <div class="setting-row">
+              <div class="setting-meta">
+                <label class="setting-lbl">ОПЕРАТИВНАЯ ПАМЯТЬ</label>
+                <span class="setting-hint">Объём памяти для JVM Minecraft</span>
+              </div>
+              <div class="setting-ctrl">
+                <input type="range" class="px-slider" id="settings-ram"
+                       min="512" max="8192" step="512" value="2048"/>
+                <div class="ram-disp">
+                  <span class="ram-val" id="settings-ram-val">2048 MB</span>
+                  <span class="ram-hint">рек: 2048–4096</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sg-divider"></div>
+
+          <!-- Java -->
+          <div class="settings-group">
+            <div class="sg-title">JAVA</div>
+
+            <div class="setting-row">
+              <div class="setting-meta">
+                <label class="setting-lbl">ПУТЬ К JAVA</label>
+                <span class="setting-hint">Оставьте пустым для автоопределения</span>
+              </div>
+              <div class="setting-ctrl wide">
+                <input type="text" class="s-input settings-txt" id="settings-java"
+                       placeholder="Автоматически (рекомендуется)"/>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-meta">
+                <label class="setting-lbl">ДИРЕКТОРИЯ ИГРЫ</label>
+                <span class="setting-hint">Файлы Minecraft хранятся здесь</span>
+              </div>
+              <div class="setting-ctrl wide">
+                <div class="game-dir-box" id="game-dir-box">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sg-divider"></div>
+
+          <!-- About -->
+          <div class="settings-group">
+            <div class="sg-title">О ЛАУНЧЕРЕ</div>
+
+            <div class="setting-row">
+              <div class="setting-meta">
+                <label class="setting-lbl">ВЕРСИЯ</label>
+                <span class="setting-hint" id="about-ver">YoLauncher v1.1.0</span>
+              </div>
+              <div class="setting-ctrl">
+                <button class="btn-action" id="btn-check-update">↻ ПРОВЕРИТЬ</button>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-meta">
+                <label class="setting-lbl">ЛИЦЕНЗИЯ</label>
+                <span class="setting-hint">YESL-2026 — YoLauncher Ethical Source</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section><!-- /tab-settings -->
+
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MODAL: CREATE INSTANCE
+════════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="modal-create">
+  <div class="modal">
+
+    <div class="modal-hd">
+      <span class="modal-title">СОЗДАТЬ ИНСТАНЦИЮ</span>
+      <button class="modal-x" id="modal-close">✕</button>
+    </div>
+
+    <div class="modal-bd">
+
+      <!-- Name -->
+      <div class="mf">
+        <label class="ml">НАЗВАНИЕ</label>
+        <input class="modal-input" id="modal-name"
+               type="text" placeholder="Мой Minecraft" maxlength="32"/>
+      </div>
+
+      <!-- Version -->
+      <div class="mf">
+        <label class="ml">ВЕРСИЯ MINECRAFT</label>
+        <div class="filter-tabs" id="modal-filter-tabs">
+          <button class="filter-tab active" data-filter="release">Релизы</button>
+          <button class="filter-tab" data-filter="snapshot">Снапшоты</button>
+          <button class="filter-tab" data-filter="old_beta">Бета</button>
+          <button class="filter-tab" data-filter="old_alpha">Альфа</button>
+        </div>
+        <div class="pixel-select" id="modal-vs" tabindex="0">
+          <div class="px-display">
+            <span class="px-text" id="modal-vs-text">Выберите версию...</span>
+            <span class="px-arrow">▼</span>
+          </div>
+          <div class="px-dropdown" id="modal-vs-drop">
+            <div class="drop-loading" id="modal-vs-loading">
+              <div class="px-spinner"></div><span>Загрузка...</span>
+            </div>
+            <ul class="drop-list" id="modal-vs-list"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mod loader -->
+      <div class="mf">
+        <label class="ml">МОД ЛОАДЕР</label>
+        <div class="ml-grid" id="ml-grid">
+          <button class="ml-btn active" data-ml="none">
+            <span class="ml-ico">■</span>
+            <span class="ml-nm">Vanilla</span>
+          </button>
+          <button class="ml-btn" data-ml="forge">
+            <span class="ml-ico">⚒</span>
+            <span class="ml-nm">Forge</span>
+            <span class="ml-tag">нужна установка</span>
+          </button>
+          <button class="ml-btn" data-ml="fabric">
+            <span class="ml-ico">◈</span>
+            <span class="ml-nm">Fabric</span>
+            <span class="ml-tag">нужна установка</span>
+          </button>
+          <button class="ml-btn" data-ml="optifine">
+            <span class="ml-ico">✦</span>
+            <span class="ml-nm">OptiFine</span>
+            <span class="ml-tag">нужна установка</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- RAM -->
+      <div class="mf">
+        <label class="ml">ОПЕРАТИВНАЯ ПАМЯТЬ</label>
+        <div class="mf-ram">
+          <input type="range" class="px-slider" id="modal-ram"
+                 min="512" max="8192" step="512" value="2048"/>
+          <span class="mf-ram-val" id="modal-ram-val">2048 MB</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-ft">
+      <button class="btn-modal-cancel" id="btn-modal-cancel">ОТМЕНА</button>
+      <button class="btn-modal-create" id="btn-modal-create" disabled>СОЗДАТЬ</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="renderer.js"></script>
+</body>
+</html>

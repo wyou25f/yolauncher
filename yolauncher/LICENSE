@@ -1,0 +1,76 @@
+YoLauncher Ethical Source License (YESL-2026)
+Version 1.1 — Effective Date: April 19, 2026
+PREAMBLE
+This license governs the use, modification, and distribution of the YoLauncher project. It is designed to balance open collaboration with ethical accountability. The Author grants broad rights to individuals and communities while establishing clear, proportionate consequences for misuse. This license is intentionally structured to protect both the integrity of the project and the rights of all users.
+1. DEFINITIONS
+1.1. "Author" refers to the original creator(s) of YoLauncher, identified as wyou25f on GitHub.
+1.2. "Software" refers to the source code, documentation, and associated assets of the YoLauncher project.
+1.3. "Derivative Work" refers to any modification, adaptation, or work based upon the Software.
+1.4. "Ordinary User" refers to an individual natural person using the Software for personal, non-commercial, or community-driven purposes, whose annual gross revenue directly attributable to the Software or any Derivative Work does not exceed USD $100,000.
+1.5. "Commercial Entity" refers to any organization, company, or legal person with annual gross revenue directly attributable to the Software or related commercial activities exceeding USD $100,000 but not exceeding USD $1,000,000, and employing 50 or fewer individuals.
+1.6. "Large Enterprise" refers to any organization, company, or legal person with annual gross revenue exceeding USD $1,000,000 or employing more than 50 individuals.
+1.7. "Closed Distribution" refers to distributing a Derivative Work without providing full, corresponding source code under the terms of this license.
+1.8. "Permissive License" refers to recognized open-source licenses that impose minimal redistribution restrictions, including but not limited to MIT, Apache 2.0, BSD, and ISC licenses.
+2. GRANT OF RIGHTS
+2.1. The Author grants any person or entity a worldwide, non-exclusive, royalty-free license to use, copy, modify, merge, publish, distribute, and sublicense the Software, subject to the conditions herein.
+2.2. All Derivative Works created by Ordinary Users must remain licensed under YESL-2026 and must be distributed with complete, corresponding source code. This copyleft obligation applies only to modifications of the Software itself and does not extend to independent components, libraries, or modules combined with the Software under a Permissive License, which retain their original license terms.
+2.3. Attribution to the original Author must be preserved in all copies and Derivative Works.
+3. RESTRICTIONS ON CLOSED DISTRIBUTION
+3.1. No person or entity may distribute a Derivative Work of YoLauncher as a proprietary, closed-source, or obfuscated product without prior written permission from the Author.
+3.2. This restriction applies regardless of the scale of distribution, including but not limited to: commercial launchers, paid modifications, or integrated products.
+4. CONDITIONS FOR COMMERCIAL OR CLOSED USE
+4.1. A Commercial Entity or Large Enterprise seeking to create a Closed Distribution must:
+a) Contact the Author at the official project channel to request a Commercial Waiver;
+b) Provide the Author with full access to the source code of the Derivative Work for security and compliance audit;
+c) Negotiate in good faith any applicable licensing terms, which may include a one-time fee or revenue share.
+4.2. Failure to complete these steps before Closed Distribution constitutes a material breach of this license.
+5. ENTITY CLASSIFICATION AND GOOD FAITH DECLARATION
+5.1. Users are expected to self-classify in good faith according to Section 1 definitions.
+5.2. The Author reserves the right to request reasonable documentation to verify classification in cases of suspected misrepresentation.
+5.3. Misclassification intended to evade license obligations will be treated as a willful violation.
+6. ENFORCEMENT PROTOCOL: THREE-STRIKE SYSTEM
+6.1. First Strike — Notice and Cure Period
+Upon identification of a potential violation, the Author will issue a written Cease and Desist Notice. The recipient has fourteen (14) calendar days to:
+a) Cease the violating activity;
+b) Remediate by publishing source code as required; or
+c) Contact the Author to seek resolution.
+No monetary penalty applies at this stage.
+6.2. Second Strike — Contractual Remedy and Distribution Halt
+If a violation persists after the cure period, or if a second distinct violation occurs:
+a) A contractual liquidated damages payment of USD $2,500 becomes due within thirty (30) days. This amount constitutes a reasonable pre-estimate of the Author’s administrative, compliance, and legal preparation costs, and is expressly not intended as a punitive penalty;
+b) All distribution of the violating Derivative Work must cease immediately;
+c) Continued distribution after this notice may trigger the Third Strike.
+6.3. Third Strike — Legal Action for Willful Infringement
+Upon a third violation, or upon willful disregard of a Second Strike notice:
+a) The Author may initiate legal proceedings for willful copyright infringement;
+b) Statutory damages may be sought up to USD $100,000 per work, or actual damages plus profits, whichever is greater, subject to applicable law;
+c) All rights granted under this license are permanently terminated for the violating party.
+6.4. Penalty Scaling by Entity Type
+a) Ordinary Users: Monetary obligations at Second Strike may be reduced or waived upon demonstration of good faith remediation.
+b) Commercial Entities: Full penalties apply as stated.
+c) Large Enterprises: Penalties may be scaled upward based on revenue and impact, up to the maximum stated in 6.3.
+7. AUDIT AND COMPLIANCE
+7.1. The Author may request reasonable evidence of compliance from any distributor of Derivative Works.
+7.2. For Commercial Waiver recipients, the Author retains the right to conduct a one-time, good-faith audit of the Derivative Work's source code to verify compliance with security and attribution requirements.
+7.3. Audit requests will be made in writing and limited in scope to matters directly related to this license.
+8. TERMINATION
+8.1. Any material breach of this license automatically terminates the rights granted herein, without notice, for the violating party.
+8.2. Termination does not affect the rights of downstream recipients who received the Software in compliance with this license prior to the breach.
+9. LEGAL STANDING AND BINDING EFFECT
+9.1. This License constitutes a binding conditional grant of rights. Use, copying, modification, or distribution of the Software signifies acceptance of all terms herein.
+9.2. Failure to comply with any term automatically terminates your right to use the Software. Any continued use after termination will be considered willful copyright infringement under applicable law.
+9.3. The monetary provisions in Section 6 are structured as liquidated damages and contractual remedies. While cross-jurisdictional enforcement of fixed amounts may vary by local law, these provisions serve as a formal basis for platform takedown requests (e.g., DMCA, GitLab, Bitbucket), good-faith settlement negotiations, and subsequent litigation where legally permissible.
+10. JURISDICTION AND DISPUTE RESOLUTION
+10.1. Any dispute arising from this license shall first be addressed through good-faith negotiation between the parties.
+10.2. If negotiation fails, disputes shall be resolved in the courts of the Author's country of residence, unless otherwise agreed in writing.
+10.3. The prevailing party in any legal action to enforce this license may recover reasonable attorney's fees and costs.
+11. ETHICAL COMMITMENT
+11.1. This license is drafted in good faith to promote transparency, community collaboration, and fair use.
+11.2. The Author commits to enforcing this license consistently, proportionately, and without discrimination.
+11.3. Language in this license is intended to be clear and respectful; no term shall be interpreted to harass, intimidate, or unjustly burden any user acting in good faith.
+12. FINAL PROVISIONS
+12.1. This license may be updated by the Author. Updated versions will be published with a new version number and effective date. Existing projects may continue under the version they adopted, unless a material security issue requires migration.
+12.2. If any provision of this license is held unenforceable, the remaining provisions shall remain in full effect.
+12.3. Contact for license inquiries, waiver requests, or compliance questions: via GitHub repository issues or the official project channel.
+This license is dedicated to the principle that open collaboration thrives when respect, clarity, and accountability are shared by all.
+END OF LICENSE
