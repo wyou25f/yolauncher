@@ -1074,3 +1074,198 @@ body::before {
 
 /* Java badge on play detail */
 .badge-java { color: #88aacc; }
+/* ════════════════════════════════════════════════════════════
+   v1.1.2 — JAVA MANAGEMENT
+════════════════════════════════════════════════════════════ */
+.java-ctrl {
+  display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+}
+.java-status-pill {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 10px;
+  background: var(--bg0); border: 1px solid var(--border);
+  min-width: 130px;
+}
+.jpill-dot { width: 7px; height: 7px; background: var(--t3); flex-shrink: 0; }
+.jpill-dot.ok   { background: var(--s-ready); }
+.jpill-dot.miss { background: var(--s-error); animation: none; }
+.jpill-dot.busy { background: var(--s-busy); animation: blink .5s ease-in-out infinite; }
+.jpill-txt { font-size: 6px; color: var(--t2); letter-spacing: .3px; }
+
+.btn-java-dl {
+  height: 28px; padding: 0 12px; font-size: 6px;
+  background: #1a2a1a;
+  box-shadow: inset 0 2px 0 var(--g1), inset 2px 0 0 var(--g1),
+              inset 0 -2px 0 var(--g0), inset -2px 0 0 var(--g0), 2px 2px 0 #000;
+  color: var(--g3);
+}
+.btn-java-dl:hover  { filter: brightness(1.25); }
+.btn-java-dl:active { transform: translate(1px,1px); }
+
+.java-dl-progress { display: flex; align-items: center; gap: 8px; width: 140px; }
+.java-dl-progress.hidden { display: none; }
+.jdl-bar {
+  flex: 1; height: 10px; background: var(--bg0);
+  box-shadow: inset 1px 1px 0 #000, inset -1px -1px 0 #242424; overflow: hidden;
+}
+.jdl-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--g0), var(--g2), var(--g3));
+  transition: width .2s ease;
+}
+.jdl-label { font-size: 6px; color: var(--g3); white-space: nowrap; min-width: 40px; }
+
+.java-warn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 12px; background: #1a1200;
+  border: 1px solid #4a3300; box-shadow: 2px 2px 0 #000; width: 340px;
+}
+.java-warn.hidden { display: none; }
+.java-warn-ico { flex-shrink: 0; line-height: 1; }
+.java-warn-txt { font-size: 6px; color: #e0b050; flex: 1; letter-spacing: .3px; }
+.java-warn-btn {
+  height: 24px; padding: 0 10px;
+  background: #2a1e00; border: 1px solid #6a4a00; color: #f5c542;
+  font-family: var(--px); font-size: 6px; cursor: pointer;
+  letter-spacing: .5px; transition: background 80ms; flex-shrink: 0;
+}
+.java-warn-btn:hover { background: #3a2a00; }
+.badge-java { color: #88aacc; }
+
+/* ════════════════════════════════════════════════════════════
+   v1.2.0 — YoID
+════════════════════════════════════════════════════════════ */
+
+/* ─── Sidebar: join button ───────────────────────────────── */
+.btn-yoid-join {
+  width: 100%; height: 34px; margin-top: 8px;
+  background: #0d1f0d;
+  border: none;
+  box-shadow: inset 0 2px 0 var(--g1), inset 2px 0 0 var(--g1),
+              inset 0 -2px 0 var(--g0), inset -2px 0 0 var(--g0),
+              2px 2px 0 #000;
+  color: var(--g3);
+  font-family: var(--px); font-size: 7px; letter-spacing: 1px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: filter 80ms;
+}
+.btn-yoid-join:hover  { filter: brightness(1.3); }
+.btn-yoid-join:active { transform: translate(1px,1px); filter: brightness(.9); }
+
+/* ─── Sidebar: logged-in card ────────────────────────────── */
+.yoid-card {
+  display: flex; align-items: center; gap: 10px;
+  background: #0d1a0d;
+  border: 1px solid var(--g1);
+  box-shadow: 2px 2px 0 #000;
+  padding: 8px 10px;
+}
+.yoid-avatar {
+  width: 28px; height: 28px;
+  background: var(--g2);
+  box-shadow: inset 0 2px 0 var(--g3), inset 0 -2px 0 var(--g0);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 7px; color: var(--t0); letter-spacing: 0; flex-shrink: 0;
+}
+.yoid-card-info { flex: 1; min-width: 0; }
+.yoid-card-name {
+  font-size: 7px; color: var(--t0); letter-spacing: .5px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.yoid-card-email {
+  font-size: 5px; color: var(--t3); letter-spacing: .3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-top: 4px;
+}
+.yoid-logout-btn {
+  width: 22px; height: 22px; flex-shrink: 0;
+  background: transparent; border: 1px solid #333; color: var(--t3);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 80ms;
+}
+.yoid-logout-btn:hover { background: #4a1a1a; border-color: #8b2020; color: #e05252; }
+.yoid-badge {
+  margin-top: 6px;
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 5px; color: var(--g3); letter-spacing: .5px;
+}
+
+/* ─── YoID Modal ─────────────────────────────────────────── */
+.modal-yoid-inner { width: 440px; }
+
+.yoid-modal-logo {
+  display: flex; align-items: center; gap: 10px;
+}
+.yoid-modal-sub {
+  font-size: 7px; color: var(--t3); letter-spacing: 1px;
+}
+
+.yoid-desc {
+  font-size: 7px; color: var(--t2); line-height: 1.9;
+  letter-spacing: .3px;
+  padding: 10px 12px;
+  background: #0d0d0d; border: 1px solid #1e1e1e;
+}
+
+.yoid-mode-tabs {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 3px;
+}
+.yoid-tab {
+  height: 28px;
+  background: #141414; border: none;
+  box-shadow: inset -1px -1px 0 #222, inset 1px 1px 0 #0a0a0a;
+  color: var(--t2); font-family: var(--px); font-size: 7px;
+  cursor: pointer; letter-spacing: .5px;
+  transition: background 80ms, color 80ms;
+}
+.yoid-tab:hover  { background: #1e1e1e; color: var(--t1); }
+.yoid-tab.active {
+  background: var(--g0); color: var(--g4);
+  box-shadow: inset -1px -1px 0 #0e2a08, inset 1px 1px 0 #1c4014;
+}
+
+.yoid-modal-bd { gap: 12px; }
+
+.yoid-error {
+  font-size: 6px; color: #e05252;
+  padding: 8px 10px;
+  background: #1a0808; border: 1px solid #4a1a1a;
+  letter-spacing: .3px; line-height: 1.6;
+}
+.yoid-error.hidden { display: none; }
+
+/* ─── Nav icon alignment fix ─────────────────────────────── */
+.nav-ico {
+  width: 14px; height: 14px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.nav-ico svg { display: block; }
+
+/* ─── SVG icon in ic-delete ──────────────────────────────── */
+.ic-delete {
+  width: 20px; height: 20px;
+  background: transparent; border: 1px solid #333; color: var(--t3);
+  font-size: 8px; font-family: var(--px);
+  cursor: pointer; transition: all 80ms;
+  display: flex; align-items: center; justify-content: center;
+}
+.ic-delete:hover { background: #4a1a1a; border-color: #8b2020; color: #e05252; }
+
+/* ─── Empty state SVG fix ────────────────────────────────── */
+.empty-ico { font-size: 32px; opacity: .2; display: flex; align-items: center; justify-content: center; }
+
+/* ─── Username field locked by YoID ─────────────────────── */
+.s-input-locked {
+  color: var(--g3) !important;
+  cursor: not-allowed;
+  box-shadow: inset -2px -2px 0 var(--g0), inset 2px 2px 0 #000,
+              0 0 0 1px var(--g0) !important;
+  opacity: .85;
+}
+.s-input-locked::placeholder { color: var(--g1); }
+
+/* Locked label hint */
+#yoid-offline-block .s-label,
+#yoid-logged-block  + * .s-label { letter-spacing: 1px; }

@@ -10,23 +10,26 @@
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════
-     TITLEBAR
-════════════════════════════════════════════════════════════════ -->
+<!-- ═══ TITLEBAR ══════════════════════════════════════════ -->
 <div class="titlebar">
   <div class="title-left">
     <span class="title-logo"><em>Yo</em>Launcher</span>
-    <span class="title-ver" id="app-version">v1.1.2</span>
+    <span class="title-ver" id="app-version">v1.2.0</span>
   </div>
   <div class="title-ctrl">
-    <button class="ctrl-btn min" id="btn-minimize">─</button>
-    <button class="ctrl-btn cls" id="btn-close">✕</button>
+    <button class="ctrl-btn min" id="btn-minimize" title="Свернуть">
+      <svg width="10" height="2" viewBox="0 0 10 2"><rect width="10" height="2" fill="currentColor"/></svg>
+    </button>
+    <button class="ctrl-btn cls" id="btn-close" title="Закрыть">
+      <svg width="10" height="10" viewBox="0 0 10 10">
+        <line x1="0" y1="0" x2="10" y2="10" stroke="currentColor" stroke-width="2"/>
+        <line x1="10" y1="0" x2="0" y2="10" stroke="currentColor" stroke-width="2"/>
+      </svg>
+    </button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     UPDATE BANNER
-════════════════════════════════════════════════════════════════ -->
+<!-- ═══ UPDATE BANNER ════════════════════════════════════ -->
 <div class="update-banner hidden" id="update-banner">
   <div class="update-left">
     <span class="update-dot"></span>
@@ -34,23 +37,23 @@
   </div>
   <div class="update-right">
     <button class="btn-do-update" id="btn-do-update">↓ ОБНОВИТЬ</button>
-    <button class="btn-dismiss-update" id="btn-dismiss-update">✕</button>
+    <button class="btn-dismiss-update" id="btn-dismiss-update">
+      <svg width="8" height="8" viewBox="0 0 8 8"><line x1="0" y1="0" x2="8" y2="8" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="0" x2="0" y2="8" stroke="currentColor" stroke-width="1.5"/></svg>
+    </button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     APP LAYOUT
-════════════════════════════════════════════════════════════════ -->
+<!-- ═══ APP LAYOUT ════════════════════════════════════════ -->
 <div class="app-layout" id="app-layout">
 
-  <!-- ──────────────── SIDEBAR ─────────────────────────── -->
+  <!-- ──── SIDEBAR ─────────────────────────────────────── -->
   <aside class="sidebar">
 
     <div class="s-logo">
       <div class="s-logo-mark"></div>
       <div class="s-logo-text">
         <span class="logo-yo">Yo</span><span class="logo-la">Launcher</span>
-        <div class="logo-ver" id="sidebar-ver">v1.1.2</div>
+        <div class="logo-ver" id="sidebar-ver">v1.2.0</div>
       </div>
     </div>
 
@@ -58,26 +61,100 @@
 
     <nav class="s-nav">
       <button class="nav-btn active" data-tab="instances">
-        <span class="nav-ico">▤</span>Сборки
+        <!-- Instances / Grid icon -->
+        <span class="nav-ico">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <rect x="0" y="0" width="6" height="6" fill="currentColor" opacity=".9"/>
+            <rect x="8" y="0" width="6" height="6" fill="currentColor" opacity=".9"/>
+            <rect x="0" y="8" width="6" height="6" fill="currentColor" opacity=".9"/>
+            <rect x="8" y="8" width="6" height="6" fill="currentColor" opacity=".9"/>
+          </svg>
+        </span>
+        Сборки
       </button>
       <button class="nav-btn" data-tab="skins">
-        <span class="nav-ico">◈</span>Скины
+        <!-- Person icon -->
+        <span class="nav-ico">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <rect x="4" y="0" width="6" height="6" fill="currentColor" opacity=".9"/>
+            <rect x="1" y="8" width="12" height="6" fill="currentColor" opacity=".9"/>
+          </svg>
+        </span>
+        Скины
       </button>
       <button class="nav-btn" data-tab="settings">
-        <span class="nav-ico">⚙</span>Настройки
+        <!-- Gear icon -->
+        <span class="nav-ico">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <rect x="5" y="0" width="4" height="2" fill="currentColor"/>
+            <rect x="5" y="12" width="4" height="2" fill="currentColor"/>
+            <rect x="0" y="5" width="2" height="4" fill="currentColor"/>
+            <rect x="12" y="5" width="2" height="4" fill="currentColor"/>
+            <rect x="4" y="4" width="6" height="6" fill="currentColor"/>
+            <rect x="6" y="6" width="2" height="2" fill="#0d0d0d"/>
+            <rect x="2" y="2" width="2" height="2" fill="currentColor"/>
+            <rect x="10" y="2" width="2" height="2" fill="currentColor"/>
+            <rect x="2" y="10" width="2" height="2" fill="currentColor"/>
+            <rect x="10" y="10" width="2" height="2" fill="currentColor"/>
+          </svg>
+        </span>
+        Настройки
       </button>
     </nav>
 
     <div class="s-spacer"></div>
 
-    <div class="s-field">
-      <label class="s-label">👤 ИГРОК</label>
-      <input id="input-username" class="s-input" type="text"
-             maxlength="16" placeholder="Player"
-             spellcheck="false" autocomplete="off"/>
+    <!-- ── YoID / Username block ────────────────────────── -->
+    <!-- Оффлайн режим (по умолчанию) -->
+    <div id="yoid-offline-block">
+      <div class="s-field">
+        <label class="s-label" id="username-label">
+          <svg width="8" height="8" viewBox="0 0 8 8" style="vertical-align:middle;margin-right:4px">
+            <rect x="2" y="0" width="4" height="4" fill="currentColor" opacity=".7"/>
+            <rect x="0" y="5" width="8" height="3" fill="currentColor" opacity=".7"/>
+          </svg>
+          ИГРОК
+        </label>
+        <input id="input-username" class="s-input" type="text"
+               maxlength="16" placeholder="Player"
+               spellcheck="false" autocomplete="off"/>
+      </div>
+      <button class="btn-yoid-join" id="btn-yoid-open">
+        <svg width="10" height="10" viewBox="0 0 10 10" style="flex-shrink:0">
+          <rect x="0" y="0" width="6" height="10" fill="currentColor" opacity=".9"/>
+          <rect x="4" y="3" width="6" height="4" fill="currentColor" opacity=".9"/>
+          <rect x="7" y="1" width="2" height="8" fill="currentColor" opacity=".9"/>
+        </svg>
+        Войти в YoID
+      </button>
     </div>
 
-    <div class="s-divider"></div>
+    <!-- Авторизован через YoID -->
+    <div id="yoid-logged-block" class="hidden">
+      <div class="yoid-card">
+        <div class="yoid-avatar" id="yoid-avatar">YO</div>
+        <div class="yoid-card-info">
+          <div class="yoid-card-name" id="yoid-card-name">Username</div>
+          <div class="yoid-card-email" id="yoid-card-email">email@example.com</div>
+        </div>
+        <button class="yoid-logout-btn" id="btn-yoid-logout" title="Выйти">
+          <svg width="8" height="8" viewBox="0 0 8 8">
+            <line x1="0" y1="0" x2="8" y2="8" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="8" y1="0" x2="0" y2="8" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
+      </div>
+      <div class="yoid-badge">
+        <svg width="8" height="8" viewBox="0 0 8 8">
+          <rect x="1" y="4" width="2" height="3" fill="currentColor"/>
+          <rect x="3" y="2" width="2" height="5" fill="currentColor"/>
+          <rect x="5" y="0" width="2" height="7" fill="currentColor"/>
+        </svg>
+        YoID Online
+      </div>
+    </div>
+
+    <div class="s-divider" style="margin-top:12px"></div>
 
     <div class="s-status">
       <div class="status-dot" id="status-dot"></div>
@@ -86,29 +163,34 @@
 
   </aside>
 
-  <!-- ──────────────── MAIN CONTENT ────────────────────── -->
+  <!-- ──── MAIN CONTENT ────────────────────────────────── -->
   <main class="main">
 
-    <!-- ─────────── TAB: INSTANCES ─────────────────────── -->
+    <!-- ── TAB: INSTANCES ────────────────────────────── -->
     <section class="tab-panel" id="tab-instances">
-
       <div class="tab-topbar">
         <h2 class="tab-title">СБОРКИ</h2>
         <button class="btn-create" id="btn-new-instance">+ СОЗДАТЬ</button>
       </div>
 
       <div class="instances-scroll" id="instances-scroll">
-        <div class="instances-grid" id="instances-grid"><!-- JS renders --></div>
+        <div class="instances-grid" id="instances-grid"></div>
         <div class="empty-state hidden" id="empty-state">
-          <div class="empty-ico">⬛</div>
+          <div class="empty-ico">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" opacity=".15">
+              <rect x="4" y="4" width="14" height="14" fill="white"/>
+              <rect x="22" y="4" width="14" height="14" fill="white"/>
+              <rect x="4" y="22" width="14" height="14" fill="white"/>
+              <rect x="22" y="22" width="14" height="14" fill="white"/>
+            </svg>
+          </div>
           <div class="empty-title">НЕТ СБОРОК</div>
           <div class="empty-sub">Нажмите «+ СОЗДАТЬ» чтобы начать</div>
         </div>
       </div>
 
-      <!-- ── Play Section ─────────────────────────────── -->
+      <!-- Play Section -->
       <div class="play-section">
-
         <div class="play-detail" id="play-detail">
           <div class="detail-empty" id="detail-empty">Выберите сборку выше</div>
           <div class="detail-info hidden" id="detail-info">
@@ -123,21 +205,23 @@
         </div>
 
         <div class="play-controls">
-
           <div class="progress-block hidden" id="progress-section">
             <div class="progress-top">
               <span class="progress-label" id="progress-label">Инициализация...</span>
               <span class="progress-pct" id="progress-pct">0%</span>
             </div>
-            <div class="progress-track">
-              <div class="progress-fill" id="progress-fill"></div>
-            </div>
+            <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
             <div class="progress-stats" id="progress-stats">0 из 0 файлов</div>
           </div>
 
-          <!-- Java missing warning -->
           <div class="java-warn hidden" id="java-warn">
-            <span class="java-warn-ico">⚠</span>
+            <span class="java-warn-ico">
+              <svg width="12" height="12" viewBox="0 0 12 12">
+                <polygon points="6,1 11,10 1,10" fill="#f5c542" stroke="none"/>
+                <rect x="5.5" y="4" width="1" height="3" fill="#1a1200"/>
+                <rect x="5.5" y="8" width="1" height="1" fill="#1a1200"/>
+              </svg>
+            </span>
             <span class="java-warn-txt" id="java-warn-txt">Java не найдена</span>
             <button class="java-warn-btn" id="java-warn-btn">Скачать</button>
           </div>
@@ -146,40 +230,30 @@
             <span class="play-shine"></span>
             <span class="play-txt" id="play-text">ИГРАТЬ</span>
           </button>
-
         </div>
-
       </div>
-    </section><!-- /tab-instances -->
+    </section>
 
-    <!-- ─────────── TAB: SKINS ──────────────────────────── -->
+    <!-- ── TAB: SKINS ─────────────────────────────────── -->
     <section class="tab-panel hidden" id="tab-skins">
-
-      <div class="tab-topbar">
-        <h2 class="tab-title">СКИНЫ</h2>
-      </div>
-
+      <div class="tab-topbar"><h2 class="tab-title">СКИНЫ</h2></div>
       <div class="skins-content">
-
         <div class="skin-preview-col">
           <div class="skin-canvas-wrap">
             <canvas id="skin-canvas" width="80" height="160"></canvas>
           </div>
           <div class="skin-canvas-label" id="skin-label">Нет скина (Steve)</div>
         </div>
-
         <div class="skin-info-col">
           <p class="skin-desc">
             Загрузите PNG-файл скина Minecraft Java Edition.<br/>
             Поддерживаются форматы 64×64 и 64×128 пикселей.
           </p>
-
           <div class="skin-btn-row">
-            <button class="btn-action" id="btn-upload-skin">⬛ ЗАГРУЗИТЬ</button>
-            <button class="btn-action btn-sec" id="btn-reset-skin">✕ СБРОСИТЬ</button>
+            <button class="btn-action" id="btn-upload-skin">ЗАГРУЗИТЬ</button>
+            <button class="btn-action btn-sec" id="btn-reset-skin">СБРОСИТЬ</button>
           </div>
           <input id="skin-file" type="file" accept="image/png" style="display:none"/>
-
           <div class="skin-note-box">
             <div class="note-title">ВАЖНО</div>
             <div class="note-body">
@@ -189,32 +263,25 @@
             </div>
           </div>
         </div>
-
       </div>
-    </section><!-- /tab-skins -->
+    </section>
 
-    <!-- ─────────── TAB: SETTINGS ────────────────────────── -->
+    <!-- ── TAB: SETTINGS ─────────────────────────────── -->
     <section class="tab-panel hidden" id="tab-settings">
-
-      <div class="tab-topbar">
-        <h2 class="tab-title">НАСТРОЙКИ</h2>
-      </div>
-
+      <div class="tab-topbar"><h2 class="tab-title">НАСТРОЙКИ</h2></div>
       <div class="settings-scroll">
         <div class="settings-wrap">
 
           <!-- Performance -->
           <div class="settings-group">
             <div class="sg-title">ПРОИЗВОДИТЕЛЬНОСТЬ</div>
-
             <div class="setting-row">
               <div class="setting-meta">
                 <label class="setting-lbl">ОПЕРАТИВНАЯ ПАМЯТЬ</label>
                 <span class="setting-hint">Объём памяти для JVM Minecraft</span>
               </div>
               <div class="setting-ctrl">
-                <input type="range" class="px-slider" id="settings-ram"
-                       min="512" max="8192" step="512" value="2048"/>
+                <input type="range" class="px-slider" id="settings-ram" min="512" max="8192" step="512" value="2048"/>
                 <div class="ram-disp">
                   <span class="ram-val" id="settings-ram-val">2048 MB</span>
                   <span class="ram-hint">рек: 2048–4096</span>
@@ -228,16 +295,13 @@
           <!-- Java -->
           <div class="settings-group">
             <div class="sg-title">JAVA</div>
-
-            <!-- Custom java path -->
             <div class="setting-row">
               <div class="setting-meta">
                 <label class="setting-lbl">ПУТЬ К JAVA</label>
                 <span class="setting-hint">Оставьте пустым для авто-выбора</span>
               </div>
               <div class="setting-ctrl wide">
-                <input type="text" class="s-input settings-txt" id="settings-java"
-                       placeholder="Автоматически (рекомендуется)"/>
+                <input type="text" class="s-input settings-txt" id="settings-java" placeholder="Автоматически (рекомендуется)"/>
               </div>
             </div>
 
@@ -249,16 +313,11 @@
               </div>
               <div class="setting-ctrl java-ctrl">
                 <div class="java-status-pill" id="java8-status">
-                  <span class="jpill-dot"></span>
-                  <span class="jpill-txt">Проверка...</span>
+                  <span class="jpill-dot"></span><span class="jpill-txt">Проверка...</span>
                 </div>
-                <button class="btn-action btn-java-dl" id="btn-java8-dl" style="display:none">
-                  ↓ СКАЧАТЬ
-                </button>
+                <button class="btn-action btn-java-dl" id="btn-java8-dl" style="display:none">↓ СКАЧАТЬ</button>
                 <div class="java-dl-progress hidden" id="java8-progress">
-                  <div class="jdl-bar">
-                    <div class="jdl-fill" id="java8-fill"></div>
-                  </div>
+                  <div class="jdl-bar"><div class="jdl-fill" id="java8-fill"></div></div>
                   <span class="jdl-label" id="java8-label">0%</span>
                 </div>
               </div>
@@ -272,16 +331,11 @@
               </div>
               <div class="setting-ctrl java-ctrl">
                 <div class="java-status-pill" id="java17-status">
-                  <span class="jpill-dot"></span>
-                  <span class="jpill-txt">Проверка...</span>
+                  <span class="jpill-dot"></span><span class="jpill-txt">Проверка...</span>
                 </div>
-                <button class="btn-action btn-java-dl" id="btn-java17-dl" style="display:none">
-                  ↓ СКАЧАТЬ
-                </button>
+                <button class="btn-action btn-java-dl" id="btn-java17-dl" style="display:none">↓ СКАЧАТЬ</button>
                 <div class="java-dl-progress hidden" id="java17-progress">
-                  <div class="jdl-bar">
-                    <div class="jdl-fill" id="java17-fill"></div>
-                  </div>
+                  <div class="jdl-bar"><div class="jdl-fill" id="java17-fill"></div></div>
                   <span class="jdl-label" id="java17-label">0%</span>
                 </div>
               </div>
@@ -295,22 +349,16 @@
               </div>
               <div class="setting-ctrl java-ctrl">
                 <div class="java-status-pill" id="java21-status">
-                  <span class="jpill-dot"></span>
-                  <span class="jpill-txt">Проверка...</span>
+                  <span class="jpill-dot"></span><span class="jpill-txt">Проверка...</span>
                 </div>
-                <button class="btn-action btn-java-dl" id="btn-java21-dl" style="display:none">
-                  ↓ СКАЧАТЬ
-                </button>
+                <button class="btn-action btn-java-dl" id="btn-java21-dl" style="display:none">↓ СКАЧАТЬ</button>
                 <div class="java-dl-progress hidden" id="java21-progress">
-                  <div class="jdl-bar">
-                    <div class="jdl-fill" id="java21-fill"></div>
-                  </div>
+                  <div class="jdl-bar"><div class="jdl-fill" id="java21-fill"></div></div>
                   <span class="jdl-label" id="java21-label">0%</span>
                 </div>
               </div>
             </div>
 
-            <!-- System Java info -->
             <div class="setting-row">
               <div class="setting-meta">
                 <label class="setting-lbl">СИСТЕМНАЯ JAVA</label>
@@ -320,8 +368,6 @@
                 <div class="game-dir-box" id="sys-java-box">—</div>
               </div>
             </div>
-
-            <!-- Game dir -->
             <div class="setting-row">
               <div class="setting-meta">
                 <label class="setting-lbl">ДИРЕКТОРИЯ ИГРЫ</label>
@@ -338,17 +384,15 @@
           <!-- About -->
           <div class="settings-group">
             <div class="sg-title">О ЛАУНЧЕРЕ</div>
-
             <div class="setting-row">
               <div class="setting-meta">
                 <label class="setting-lbl">ВЕРСИЯ</label>
-                <span class="setting-hint" id="about-ver">YoLauncher v1.1.2</span>
+                <span class="setting-hint" id="about-ver">YoLauncher v1.2.0</span>
               </div>
               <div class="setting-ctrl">
                 <button class="btn-action" id="btn-check-update">↻ ПРОВЕРИТЬ</button>
               </div>
             </div>
-
             <div class="setting-row">
               <div class="setting-meta">
                 <label class="setting-lbl">ЛИЦЕНЗИЯ</label>
@@ -359,32 +403,25 @@
 
         </div>
       </div>
-    </section><!-- /tab-settings -->
+    </section>
 
   </main>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     MODAL: CREATE INSTANCE
-════════════════════════════════════════════════════════════════ -->
+<!-- ═══ MODAL: CREATE INSTANCE ════════════════════════════ -->
 <div class="modal-overlay hidden" id="modal-create">
   <div class="modal">
-
     <div class="modal-hd">
       <span class="modal-title">СОЗДАТЬ СБОРКУ</span>
-      <button class="modal-x" id="modal-close">✕</button>
+      <button class="modal-x" id="modal-close">
+        <svg width="8" height="8" viewBox="0 0 8 8"><line x1="0" y1="0" x2="8" y2="8" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="0" x2="0" y2="8" stroke="currentColor" stroke-width="1.5"/></svg>
+      </button>
     </div>
-
     <div class="modal-bd">
-
-      <!-- Name -->
       <div class="mf">
         <label class="ml">НАЗВАНИЕ</label>
-        <input class="modal-input" id="modal-name"
-               type="text" placeholder="Мой Minecraft" maxlength="32"/>
+        <input class="modal-input" id="modal-name" type="text" placeholder="Мой Minecraft" maxlength="32"/>
       </div>
-
-      <!-- Version -->
       <div class="mf">
         <label class="ml">ВЕРСИЯ MINECRAFT</label>
         <div class="filter-tabs" id="modal-filter-tabs">
@@ -406,53 +443,134 @@
           </div>
         </div>
       </div>
-
-      <!-- Mod loader -->
       <div class="mf">
         <label class="ml">МОД ЛОАДЕР</label>
         <div class="ml-grid" id="ml-grid">
           <button class="ml-btn active" data-ml="none">
-            <span class="ml-ico">■</span>
+            <span class="ml-ico">
+              <svg width="12" height="12" viewBox="0 0 12 12"><rect width="12" height="12" fill="currentColor" opacity=".7"/></svg>
+            </span>
             <span class="ml-nm">Vanilla</span>
           </button>
           <button class="ml-btn" data-ml="forge">
-            <span class="ml-ico">⚒</span>
+            <span class="ml-ico">
+              <svg width="12" height="12" viewBox="0 0 12 12">
+                <rect x="4" y="0" width="4" height="3" fill="currentColor"/>
+                <rect x="0" y="4" width="12" height="4" fill="currentColor"/>
+                <rect x="4" y="9" width="4" height="3" fill="currentColor"/>
+              </svg>
+            </span>
             <span class="ml-nm">Forge</span>
             <span class="ml-tag">нужна установка</span>
           </button>
           <button class="ml-btn" data-ml="fabric">
-            <span class="ml-ico">◈</span>
+            <span class="ml-ico">
+              <svg width="12" height="12" viewBox="0 0 12 12">
+                <rect x="0" y="0" width="5" height="5" fill="currentColor"/>
+                <rect x="7" y="0" width="5" height="5" fill="currentColor"/>
+                <rect x="0" y="7" width="5" height="5" fill="currentColor"/>
+                <rect x="7" y="7" width="5" height="5" fill="currentColor"/>
+              </svg>
+            </span>
             <span class="ml-nm">Fabric</span>
             <span class="ml-tag">нужна установка</span>
           </button>
           <button class="ml-btn" data-ml="optifine">
-            <span class="ml-ico">✦</span>
+            <span class="ml-ico">
+              <svg width="12" height="12" viewBox="0 0 12 12">
+                <polygon points="6,0 12,6 6,12 0,6" fill="currentColor" opacity=".8"/>
+                <rect x="4" y="4" width="4" height="4" fill="#0d0d0d"/>
+              </svg>
+            </span>
             <span class="ml-nm">OptiFine</span>
             <span class="ml-tag">нужна установка</span>
           </button>
         </div>
       </div>
-
-      <!-- RAM -->
       <div class="mf">
         <label class="ml">ОПЕРАТИВНАЯ ПАМЯТЬ</label>
         <div class="mf-ram">
-          <input type="range" class="px-slider" id="modal-ram"
-                 min="512" max="8192" step="512" value="2048"/>
+          <input type="range" class="px-slider" id="modal-ram" min="512" max="8192" step="512" value="2048"/>
           <span class="mf-ram-val" id="modal-ram-val">2048 MB</span>
         </div>
       </div>
-
     </div>
-
     <div class="modal-ft">
       <button class="btn-modal-cancel" id="btn-modal-cancel">ОТМЕНА</button>
       <button class="btn-modal-create" id="btn-modal-create" disabled>СОЗДАТЬ</button>
     </div>
-
   </div>
 </div>
 
+<!-- ═══ MODAL: YoID ══════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="modal-yoid">
+  <div class="modal modal-yoid-inner">
+    <div class="modal-hd">
+      <div class="yoid-modal-logo">
+        <svg width="20" height="20" viewBox="0 0 20 20" style="flex-shrink:0">
+          <rect x="2" y="2" width="7" height="7" fill="#5ab84a"/>
+          <rect x="11" y="2" width="7" height="7" fill="#5ab84a"/>
+          <rect x="2" y="11" width="7" height="7" fill="#5ab84a"/>
+          <rect x="11" y="11" width="7" height="7" fill="#265c1c"/>
+        </svg>
+        <span class="modal-title">YoID</span>
+        <span class="yoid-modal-sub" id="yoid-modal-mode-label">Вход</span>
+      </div>
+      <button class="modal-x" id="yoid-modal-close">
+        <svg width="8" height="8" viewBox="0 0 8 8"><line x1="0" y1="0" x2="8" y2="8" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="0" x2="0" y2="8" stroke="currentColor" stroke-width="1.5"/></svg>
+      </button>
+    </div>
+
+    <div class="modal-bd yoid-modal-bd">
+
+      <!-- Описание -->
+      <div class="yoid-desc">
+        Единый аккаунт Yo-software. Войдите для сохранения прогресса,
+        смены ника и синхронизации настроек.
+      </div>
+
+      <!-- Переключатель режима -->
+      <div class="yoid-mode-tabs">
+        <button class="yoid-tab active" id="yoid-tab-login" data-mode="login">Вход</button>
+        <button class="yoid-tab" id="yoid-tab-register" data-mode="register">Регистрация</button>
+      </div>
+
+      <!-- Поле имени (только для регистрации) -->
+      <div class="mf" id="yoid-name-field" style="display:none">
+        <label class="ml">ИМЯ В ИГРЕ</label>
+        <input class="modal-input" id="yoid-displayname" type="text" placeholder="Player (макс. 16 симв.)" maxlength="16"/>
+      </div>
+
+      <!-- Email -->
+      <div class="mf">
+        <label class="ml">EMAIL</label>
+        <input class="modal-input" id="yoid-email" type="email" placeholder="you@example.com"/>
+      </div>
+
+      <!-- Password -->
+      <div class="mf">
+        <label class="ml">ПАРОЛЬ</label>
+        <input class="modal-input" id="yoid-password" type="password" placeholder="••••••••"/>
+      </div>
+
+      <!-- Error -->
+      <div class="yoid-error hidden" id="yoid-error"></div>
+
+    </div>
+
+    <div class="modal-ft">
+      <button class="btn-modal-cancel" id="yoid-cancel">ОТМЕНА</button>
+      <button class="btn-modal-create" id="yoid-submit">
+        <span id="yoid-submit-text">ВОЙТИ</span>
+        <span class="px-spinner hidden" id="yoid-spinner" style="width:10px;height:10px;display:inline-block;vertical-align:middle;margin-left:6px"></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDK (compat — глобальный window.firebase) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="renderer.js"></script>
 </body>
 </html>

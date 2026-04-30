@@ -3,23 +3,23 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('launcher', {
   // Window
-  minimize:  ()      => ipcRenderer.send('window-minimize'),
-  close:     ()      => ipcRenderer.send('window-close'),
-  openUrl:   (url)   => ipcRenderer.send('open-url', url),
+  minimize: ()    => ipcRenderer.send('window-minimize'),
+  close:    ()    => ipcRenderer.send('window-close'),
+  openUrl:  (url) => ipcRenderer.send('open-url', url),
 
   // App meta
-  getVersion:  ()    => ipcRenderer.invoke('get-version'),
-  getGameDir:  ()    => ipcRenderer.invoke('get-game-dir'),
-  checkUpdate: ()    => ipcRenderer.invoke('check-update'),
+  getVersion:  () => ipcRenderer.invoke('get-version'),
+  getGameDir:  () => ipcRenderer.invoke('get-game-dir'),
+  checkUpdate: () => ipcRenderer.invoke('check-update'),
 
   // Minecraft
-  fetchVersions: ()      => ipcRenderer.invoke('fetch-versions'),
-  launchGame:    (opts)  => ipcRenderer.invoke('launch-game', opts),
+  fetchVersions: ()     => ipcRenderer.invoke('fetch-versions'),
+  launchGame:    (opts) => ipcRenderer.invoke('launch-game', opts),
 
   // Java
-  getJavaStatus:        ()       => ipcRenderer.invoke('get-java-status'),
-  downloadJava:         (v)      => ipcRenderer.invoke('download-java', v),
-  detectJavaForVersion: (ver)    => ipcRenderer.invoke('detect-java-for-version', ver),
+  getJavaStatus:        ()    => ipcRenderer.invoke('get-java-status'),
+  downloadJava:         (v)   => ipcRenderer.invoke('download-java', v),
+  detectJavaForVersion: (ver) => ipcRenderer.invoke('detect-java-for-version', ver),
 
   // Launch events
   onLaunchProgress: (cb) => ipcRenderer.on('launch-progress', (_, d) => cb(d)),

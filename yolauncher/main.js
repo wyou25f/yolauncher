@@ -5,18 +5,17 @@ const fs     = require('fs');
 const https  = require('https');
 const http   = require('http');
 const os     = require('os');
-const { execSync, exec } = require('child_process');
+const { execSync } = require('child_process');
 const crypto = require('crypto');
 
-const APP_VERSION = '1.1.2';
+const APP_VERSION = '1.2.0';
 let mainWindow;
 
-// ─── MD5 UUID helper (офлайн/пиратский мультиплеер) ──────
+// ─── MD5 UUID helper (офлайн без YoID) ───────────────────
 function offlineUUID(username) {
   const hash = crypto.createHash('md5')
     .update(`OfflinePlayer:${username}`)
     .digest();
-  // Vanilla-совместимый UUID v3
   hash[6] = (hash[6] & 0x0f) | 0x30;
   hash[8] = (hash[8] & 0x3f) | 0x80;
   const h = hash.toString('hex');
@@ -25,13 +24,11 @@ function offlineUUID(username) {
 
 // ─── Java version → MC mapping ────────────────────────────
 function requiredJavaForMC(version) {
-  // version — строка вида "1.20.6", "1.17.1", "1.8.9"
   const parts = version.split('.').map(Number);
   const minor = parts[1] || 0;
   const patch = parts[2] || 0;
   if (minor >= 21) return 21;
   if (minor === 20 && patch >= 5) return 21;
-  if (minor >= 18) return 17;
   if (minor >= 17) return 17;
   return 8;
 }
@@ -44,8 +41,6 @@ function javaBaseDir() {
 function javaExePath(majorVersion) {
   const dir = path.join(javaBaseDir(), `jdk-${majorVersion}`);
   const isWin = process.platform === 'win32';
-  // Adoptium распаковывает в подпапку вида jdk-21.0.3+9-jre
-  // Ищем рекурсивно bin/java
   if (!fs.existsSync(dir)) return null;
   const entries = fs.readdirSync(dir);
   for (const entry of entries) {
@@ -61,27 +56,25 @@ function systemJavaVersion() {
     const m = out.match(/version "(\d+)(?:\.(\d+))?/);
     if (!m) return null;
     const major = parseInt(m[1]);
-    return major === 1 ? parseInt(m[2]) : major;  // 1.8.x → 8
-  } catch {
-    return null;
-  }
+    return major === 1 ? parseInt(m[2]) : major;
+  } catch { return null; }
 }
 
 // ─── Adoptium download URL ────────────────────────────────
 function adoptiumUrl(majorVersion) {
-  const plat = { win32: 'windows', linux: 'linux', darwin: 'mac' }[process.platform] || 'linux';
+  const plat    = { win32: 'windows', linux: 'linux', darwin: 'mac' }[process.platform] || 'linux';
   const archMap = { x64: 'x64', arm64: 'aarch64', ia32: 'x32' };
-  const arch = archMap[os.arch()] || 'x64';
+  const arch    = archMap[os.arch()] || 'x64';
   return `https://api.adoptium.net/v3/binary/latest/${majorVersion}/ga/${plat}/${arch}/jre/hotspot/normal/eclipse`;
 }
 
 // ─── Follow redirects helper ──────────────────────────────
-function httpsFollowRedirects(url, onData, onEnd, onError, redirectCount = 0) {
-  if (redirectCount > 10) { onError(new Error('Too many redirects')); return; }
+function httpsFollowRedirects(url, onData, onEnd, onError, n = 0) {
+  if (n > 10) { onError(new Error('Too many redirects')); return; }
   const mod = url.startsWith('https') ? https : http;
   const req = mod.get(url, { headers: { 'User-Agent': `YoLauncher/${APP_VERSION}` } }, (res) => {
     if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-      httpsFollowRedirects(res.headers.location, onData, onEnd, onError, redirectCount + 1);
+      httpsFollowRedirects(res.headers.location, onData, onEnd, onError, n + 1);
       return;
     }
     if (res.statusCode !== 200) { onError(new Error(`HTTP ${res.statusCode}`)); return; }
@@ -95,12 +88,9 @@ function httpsFollowRedirects(url, onData, onEnd, onError, redirectCount = 0) {
 // ─── Window ───────────────────────────────────────────────
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width:     1150,
-    height:    700,
-    minWidth:  1150,
-    minHeight: 700,
-    resizable: false,
-    frame:     false,
+    width: 1150, height: 700,
+    minWidth: 1150, minHeight: 700,
+    resizable: false, frame: false,
     backgroundColor: '#0d0d0d',
     webPreferences: {
       preload:          path.join(__dirname, 'preload.js'),
@@ -109,7 +99,6 @@ function createWindow() {
     },
   });
   mainWindow.loadFile(path.join(__dirname, 'renderer', 'index.html'));
-  // mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
@@ -128,12 +117,10 @@ ipcMain.on('window-close',    () => app.quit());
 ipcMain.on('open-url', (_, url) => shell.openExternal(url));
 
 // ─── App meta ────────────────────────────────────────────
-ipcMain.handle('get-version', () => APP_VERSION);
-ipcMain.handle('get-game-dir', () =>
-  path.join(app.getPath('appData'), '.yolauncher')
-);
+ipcMain.handle('get-version',  () => APP_VERSION);
+ipcMain.handle('get-game-dir', () => path.join(app.getPath('appData'), '.yolauncher'));
 
-// ─── Update check (FIXED: Yo-software/yolauncher) ────────
+// ─── Update check (Yo-software/yolauncher) ───────────────
 ipcMain.handle('check-update', () => new Promise((resolve) => {
   const req = https.get({
     hostname: 'api.github.com',
@@ -146,130 +133,78 @@ ipcMain.handle('check-update', () => new Promise((resolve) => {
       try {
         const j      = JSON.parse(raw);
         const latest = (j.tag_name || '').replace(/^v/, '');
-        resolve({
-          current:   APP_VERSION,
-          latest:    latest || APP_VERSION,
-          hasUpdate: !!latest && latest !== APP_VERSION,
-          url:       j.html_url || '',
-        });
+        resolve({ current: APP_VERSION, latest: latest || APP_VERSION, hasUpdate: !!latest && latest !== APP_VERSION, url: j.html_url || '' });
       } catch {
         resolve({ current: APP_VERSION, latest: APP_VERSION, hasUpdate: false, url: '' });
       }
     });
   });
-  req.on('error', () =>
-    resolve({ current: APP_VERSION, latest: APP_VERSION, hasUpdate: false, url: '' })
-  );
-  req.setTimeout(8000, () => {
-    req.destroy();
-    resolve({ current: APP_VERSION, latest: APP_VERSION, hasUpdate: false, url: '' });
-  });
+  req.on('error', () => resolve({ current: APP_VERSION, latest: APP_VERSION, hasUpdate: false, url: '' }));
+  req.setTimeout(8000, () => { req.destroy(); resolve({ current: APP_VERSION, latest: APP_VERSION, hasUpdate: false, url: '' }); });
 }));
 
 // ─── Java status ─────────────────────────────────────────
 ipcMain.handle('get-java-status', () => {
-  const versions = [8, 17, 21];
   const result = {};
-  for (const v of versions) {
-    const localPath = javaExePath(v);
-    result[v] = {
-      installed: !!localPath,
-      path:      localPath || null,
-    };
+  for (const v of [8, 17, 21]) {
+    const p = javaExePath(v);
+    result[v] = { installed: !!p, path: p || null };
   }
-  // Системная Java
-  const sysVer = systemJavaVersion();
-  result.system = { version: sysVer };
+  result.system = { version: systemJavaVersion() };
   return result;
 });
 
-// ─── Java download (Adoptium Temurin JRE) ────────────────
+// ─── Java download ────────────────────────────────────────
 ipcMain.handle('download-java', async (_, majorVersion) => {
   const url     = adoptiumUrl(majorVersion);
   const destDir = path.join(javaBaseDir(), `jdk-${majorVersion}`);
-
   if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
 
-  const isWin = process.platform === 'win32';
-  const ext    = isWin ? '.zip' : '.tar.gz';
-  const tmpFile = path.join(os.tmpdir(), `yolauncher-java${majorVersion}${ext}`);
+  const isWin   = process.platform === 'win32';
+  const tmpFile = path.join(os.tmpdir(), `yolauncher-java${majorVersion}${isWin ? '.zip' : '.tar.gz'}`);
 
   return new Promise((resolve) => {
-    let downloaded = 0;
-    let total = 0;
-    const fileStream = fs.createWriteStream(tmpFile);
+    const fileStream  = fs.createWriteStream(tmpFile);
+    const sendProgress = (pct, status) =>
+      mainWindow.webContents.send('java-download-progress', { version: majorVersion, pct, status });
 
-    const sendProgress = (pct, status) => {
-      mainWindow.webContents.send('java-download-progress', {
-        version: majorVersion, pct, status,
-      });
-    };
-
-    httpsFollowRedirects(
-      url,
-      (chunk) => {
-        downloaded += chunk.length;
-        if (total > 0) sendProgress(Math.floor(downloaded / total * 80), 'downloading');
-        fileStream.write(chunk);
-      },
+    httpsFollowRedirects(url,
+      chunk => fileStream.write(chunk),
       () => {
         fileStream.close(async () => {
           sendProgress(80, 'extracting');
           try {
             if (isWin) {
-              // PowerShell Expand-Archive
-              execSync(
-                `powershell -NoProfile -Command "Expand-Archive -LiteralPath '${tmpFile}' -DestinationPath '${destDir}' -Force"`,
-                { timeout: 120000 }
-              );
+              execSync(`powershell -NoProfile -Command "Expand-Archive -LiteralPath '${tmpFile}' -DestinationPath '${destDir}' -Force"`, { timeout: 120000 });
             } else {
               execSync(`tar -xzf "${tmpFile}" -C "${destDir}"`, { timeout: 120000 });
             }
             fs.unlinkSync(tmpFile);
             sendProgress(100, 'done');
             resolve({ success: true, path: javaExePath(majorVersion) });
-          } catch (e) {
-            resolve({ success: false, error: e.message });
-          }
+          } catch (e) { resolve({ success: false, error: e.message }); }
         });
       },
-      (err) => {
-        fileStream.close();
-        resolve({ success: false, error: err.message });
-      }
+      (err) => { fileStream.close(); resolve({ success: false, error: err.message }); }
     );
-
-    // Получаем Content-Length через HEAD перед GET не работает с redirects,
-    // поэтому просто не показываем точный прогресс
-    // (можно улучшить позже)
   });
 });
 
-// ─── Detect best Java for MC version ─────────────────────
+// ─── Detect Java for MC version ───────────────────────────
 ipcMain.handle('detect-java-for-version', (_, mcVersion) => {
   const needed = requiredJavaForMC(mcVersion);
-
-  // 1. Ищем локальную установленную нужную версию
-  const localPath = javaExePath(needed);
-  if (localPath) return { found: true, path: localPath, source: 'local', needed };
-
-  // 2. Ищем локальную версию выше нужной
-  const higher = [8, 17, 21].filter(v => v >= needed);
-  for (const v of higher) {
+  const local  = javaExePath(needed);
+  if (local) return { found: true, path: local, source: 'local', needed };
+  for (const v of [8, 17, 21].filter(x => x >= needed)) {
     const p = javaExePath(v);
     if (p) return { found: true, path: p, source: 'local', needed };
   }
-
-  // 3. Системная Java
   const sysVer = systemJavaVersion();
-  if (sysVer && sysVer >= needed) {
-    return { found: true, path: null, source: 'system', needed, systemVersion: sysVer };
-  }
-
+  if (sysVer && sysVer >= needed) return { found: true, path: null, source: 'system', needed, systemVersion: sysVer };
   return { found: false, needed };
 });
 
-// ─── Fetch Minecraft version list ────────────────────────
+// ─── Fetch Minecraft versions ─────────────────────────────
 ipcMain.handle('fetch-versions', () => new Promise((resolve, reject) => {
   const req = https.get('https://launchermeta.mojang.com/mc/game/version_manifest.json', (res) => {
     let raw = '';
@@ -278,9 +213,7 @@ ipcMain.handle('fetch-versions', () => new Promise((resolve, reject) => {
       try {
         const { versions } = JSON.parse(raw);
         resolve(versions.map(v => ({ id: v.id, type: v.type })));
-      } catch (e) {
-        reject(e.message);
-      }
+      } catch (e) { reject(e.message); }
     });
   });
   req.on('error', e => reject(e.message));
@@ -288,60 +221,48 @@ ipcMain.handle('fetch-versions', () => new Promise((resolve, reject) => {
 }));
 
 // ─── Launch Minecraft ─────────────────────────────────────
-ipcMain.handle('launch-game', async (_, { version, username, ram, javaPath, modLoader }) => {
+// uuid — может быть передан из renderer (YoID SHA-256 UUID)
+ipcMain.handle('launch-game', async (_, { version, username, uuid: providedUuid, ram, javaPath }) => {
   try {
     const { Client } = require('minecraft-launcher-core');
-    const launcher = new Client();
-
-    const gameDir = path.join(app.getPath('appData'), '.yolauncher');
+    const launcher   = new Client();
+    const gameDir    = path.join(app.getPath('appData'), '.yolauncher');
     if (!fs.existsSync(gameDir)) fs.mkdirSync(gameDir, { recursive: true });
 
     const ramMB = Math.max(512, parseInt(ram, 10) || 2048);
     const name  = (username || 'Player').slice(0, 16);
-    const uuid  = offlineUUID(name);  // MD5 UUID — фикс мультиплеера
+    const uuid  = providedUuid || offlineUUID(name);
 
-    // Авто-Java: если javaPath не задан — ищем сами
-    let resolvedJava = javaPath && javaPath.trim() ? javaPath.trim() : null;
+    // Авто-Java
+    let resolvedJava = javaPath?.trim() || null;
     if (!resolvedJava) {
       const needed = requiredJavaForMC(version);
       const local  = javaExePath(needed);
       if (local) {
         resolvedJava = local;
       } else {
-        // fallback higher
         for (const v of [8, 17, 21].filter(x => x >= needed)) {
           const p = javaExePath(v);
           if (p) { resolvedJava = p; break; }
         }
       }
-      // resolvedJava = null → launcher-core использует системную
     }
 
     const opts = {
       authorization: {
-        access_token: 'dummy',
-        client_token: 'dummy',
-        uuid,
-        name,
+        access_token: providedUuid || 'dummy',
+        client_token: 'yolauncher',
+        uuid, name,
         user_properties: '{}',
       },
       root:    gameDir,
       version: { number: version, type: 'release' },
-      memory:  {
-        max: `${ramMB}M`,
-        min: `${Math.max(256, Math.floor(ramMB / 4))}M`,
-      },
+      memory:  { max: `${ramMB}M`, min: `${Math.max(256, Math.floor(ramMB / 4))}M` },
       overrides: {
         detached: false,
-        extraArgs: [
-          '--username',    name,
-          '--uuid',        uuid,
-          '--accessToken', 'dummy',
-          '--userType',    'legacy',
-        ],
+        extraArgs: ['--username', name, '--uuid', uuid, '--accessToken', providedUuid || 'dummy', '--userType', 'legacy'],
       },
     };
-
     if (resolvedJava) opts.javaPath = resolvedJava;
 
     launcher.on('progress', e => mainWindow.webContents.send('launch-progress', e));
